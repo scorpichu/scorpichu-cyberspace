@@ -19,13 +19,4 @@ export const defaultPosts: BlogPost[] = [
     images: [],
     created_at: '2026-02-08T10:30:00.000Z',
   },
-  {
-    id: 'post3',
-    title: 'Yuri Recommendations for Beginners',
-    content: "Been getting asked about where to start with Yuri manga/anime lately! Here are my top picks for anyone new to the genre:\n\n1. **Bloom Into You** - Classic slow-burn with beautiful character development\n2. **Citrus** - More dramatic but iconic for a reason\n3. **Whispered Words** - Sweet school life story\n4. **Adachi and Shimamura** - Subtle and slice-of-life\n\nEach has a different vibe, so there's something for every mood!",
-    tags: 'yuri, manga, recommendations',
-    author: 'naomi',
-    images: [],
-    created_at: '2026-02-05T14:15:00.000Z',
-  },
 ]
