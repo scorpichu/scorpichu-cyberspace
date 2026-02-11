@@ -125,6 +125,110 @@
                 <main>
                     <h1>Welcome to Naomi's Cyberspace...</h1>
                     <p><strong>Info!</strong></p>
+
+                <!-- Simple music player: place your .mp3 files in assets/audio and list them in assets/audio/list.json -->
+                <div id="music-player" style="position:fixed;right:16px;bottom:16px;z-index:9999;font-family:Arial,Helvetica,sans-serif">
+                    <button id="music-toggle" aria-label="Play music" style="background:#222;color:#fff;border:none;padding:10px 14px;border-radius:999px;cursor:pointer">Play</button>
+                    <span id="music-track" style="margin-left:8px;color:#222;font-size:14px;display:none"></span>
+                </div>
+
+                <script>
+                    (function(){
+                        const toggle = document.getElementById('music-toggle');
+                        const trackLabel = document.getElementById('music-track');
+                        const sidebarPlayBtn = document.getElementById('play-pause-btn');
+                        const sidebarPrev = document.getElementById('prev-btn');
+                        const sidebarNext = document.getElementById('next-btn');
+                        const nowTitle = document.getElementById('now-playing-title') || null;
+                        const nowArtist = document.getElementById('now-playing-artist') || null;
+                        const footerSong = document.getElementById('footer-song') || null;
+
+                        let audio = new Audio();
+                        audio.preload = 'auto';
+                        let playlist = [];
+                        let index = 0;
+                        let playing = false;
+
+                        function setIconsPlaying(state){
+                            playing = state;
+                            if(toggle) toggle.textContent = state ? 'Pause' : 'Play';
+                            if(sidebarPlayBtn){
+                                const icon = sidebarPlayBtn.querySelector('#play-icon');
+                                if(icon) icon.className = state ? 'fas fa-pause' : 'fas fa-play';
+                                else sidebarPlayBtn.innerHTML = state ? '<i class="fas fa-pause" id="play-icon"></i>' : '<i class="fas fa-play" id="play-icon"></i>';
+                            }
+                        }
+
+                        function updateLabels(){
+                            if(!playlist.length) return;
+                            const name = playlist[index].split('/').pop();
+                            if(trackLabel){ trackLabel.style.display='inline-block'; trackLabel.textContent = name; }
+                            if(nowTitle) nowTitle.textContent = name.replace(/\.[^/.]+$/, '');
+                            if(footerSong) footerSong.textContent = nowTitle ? nowTitle.textContent : name.replace(/\.[^/.]+$/, '');
+                        }
+
+                        function playCurrent(){
+                            if(!playlist.length) return Promise.reject(new Error('no tracks'));
+                            audio.src = playlist[index];
+                            updateLabels();
+                            return audio.play().then(()=>{ setIconsPlaying(true); }).catch(err=>{ setIconsPlaying(false); throw err; });
+                        }
+
+                        function playNext(){
+                            if(!playlist.length) return;
+                            index = (index + 1) % playlist.length;
+                            playCurrent().catch(()=>{});
+                        }
+
+                        function playPrev(){
+                            if(!playlist.length) return;
+                            index = (index - 1 + playlist.length) % playlist.length;
+                            playCurrent().catch(()=>{});
+                        }
+
+                        audio.addEventListener('ended', ()=>{
+                            playNext();
+                        });
+
+                        // load playlist
+                        fetch('assets/audio/list.json').then(r=>r.json()).then(list=>{
+                            if(!Array.isArray(list) || list.length===0) return;
+                            playlist = list;
+                            index = 0;
+                            // try autoplay; if blocked, show play button for user to start
+                            playCurrent().catch(()=>{
+                                // autoplay blocked — show play button (already visible)
+                                setIconsPlaying(false);
+                            });
+                        }).catch(()=>{
+                            // no playlist or error — leave UI as-is
+                        });
+
+                        // floating toggle
+                        if(toggle) toggle.addEventListener('click', ()=>{
+                            if(!playlist.length) { alert('No audio files configured. Put your MP3s in assets/audio and list them in assets/audio/list.json'); return; }
+                            if(audio.paused){
+                                playCurrent().catch(()=>{ alert('Playback blocked. Interact with the page and try again.'); });
+                            } else {
+                                audio.pause();
+                                setIconsPlaying(false);
+                            }
+                        });
+
+                        // sidebar controls
+                        if(sidebarPlayBtn) sidebarPlayBtn.addEventListener('click', ()=>{ if(toggle) toggle.click(); });
+                        if(sidebarNext) sidebarNext.addEventListener('click', ()=>{ playNext(); });
+                        if(sidebarPrev) sidebarPrev.addEventListener('click', ()=>{ playPrev(); });
+
+                        // volume slider sync (if present)
+                        const vol = document.getElementById('volume-slider');
+                        if(vol){
+                            audio.volume = Number(vol.value)/100;
+                            vol.addEventListener('input', ()=>{ audio.volume = Number(vol.value)/100; });
+                        }
+
+                    })();
+                </script>
                     <p>This website was made to carve my own corner of the internet, hence my cyberspace! I will try to add blogpost features along with collages to keep this site as rich in content and as personal as possible.</p>
                     <p>My main interests include Yuri, literature, K/J music, dancing, and dressing up. This space will evolve as I do!</p>
                     <p>It will be like my own threads, where no one can really reply LOL... I will be updating with Yuri/Manga recommendations, along with BOOKS! And music recs! How exciting :)</p>
