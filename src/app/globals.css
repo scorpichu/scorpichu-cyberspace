@@ -923,63 +923,22 @@ footer > div:last-child {
   font-size: 1.1rem;
 }
 
-/* Multiple Image Upload */
-.multi-image-upload {
-  margin-top: 10px;
-}
-
-.image-upload-area {
-  padding: 10px;
+/* File Input */
+.file-input {
+  width: 100%;
+  padding: 12px;
   border: 2px dashed #cbd5e0;
   border-radius: 8px;
-  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  background: #f7fafc;
   cursor: pointer;
   transition: border 0.3s;
-  margin-bottom: 10px;
 }
 
-.image-upload-area:hover {
+.file-input:hover {
   border-color: #3182ce;
   background: #f0f9ff;
-}
-
-.image-upload-area label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  color: #4a5568;
-}
-
-.image-upload-area i {
-  font-size: 2rem;
-  color: #3182ce;
-  margin-bottom: 8px;
-}
-
-.image-url-input {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.image-url-input input {
-  flex: 1;
-  padding: 8px 12px;
-}
-
-.add-url-btn {
-  background: #63b3ed;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 15px;
-  cursor: pointer;
-  font-family: 'DotGothic16', sans-serif;
-}
-
-.add-url-btn:hover {
-  background: #3182ce;
 }
 
 .image-previews {

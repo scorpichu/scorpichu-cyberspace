@@ -1,21 +1,27 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface BlogFormProps {
   onPostCreated: () => void
 }
 
+interface SelectedFile {
+  file: File
+  preview: string
+}
+
 export default function BlogForm({ onPostCreated }: BlogFormProps) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
-  const [images, setImages] = useState<string[]>([])
+  const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([])
   const [tags, setTags] = useState('')
   const [author, setAuthor] = useState('naomi')
   const [tempAuthor, setTempAuthor] = useState('naomi')
   const [posting, setPosting] = useState(false)
+  const [postingStatus, setPostingStatus] = useState('')
   const [success, setSuccess] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const storedAuthor = localStorage.getItem('blogAuthor')
@@ -25,15 +31,35 @@ export default function BlogForm({ onPostCreated }: BlogFormProps) {
     }
   }, [])
 
-  const handleAddUrl = () => {
-    if (imageUrl.trim()) {
-      setImages([...images, imageUrl.trim()])
-      setImageUrl('')
+  // Clean up object URLs when component unmounts or files change
+  useEffect(() => {
+    return () => {
+      selectedFiles.forEach((sf) => URL.revokeObjectURL(sf.preview))
+    }
+  }, [selectedFiles])
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+
+    const newFiles: SelectedFile[] = Array.from(files).map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }))
+
+    setSelectedFiles((prev) => [...prev, ...newFiles])
+
+    // Reset input so the same file can be selected again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
     }
   }
 
-  const handleRemoveImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index))
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => {
+      URL.revokeObjectURL(prev[index].preview)
+      return prev.filter((_, i) => i !== index)
+    })
   }
 
   const handleSetAuthor = () => {
@@ -52,6 +78,29 @@ export default function BlogForm({ onPostCreated }: BlogFormProps) {
 
     setPosting(true)
     try {
+      let images: { src: string; name: string }[] = []
+
+      // Upload files first if any are selected
+      if (selectedFiles.length > 0) {
+        setPostingStatus('Uploading images...')
+        const formData = new FormData()
+        selectedFiles.forEach((sf) => formData.append('files', sf.file))
+
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (!uploadRes.ok) {
+          alert('Failed to upload images')
+          return
+        }
+
+        images = await uploadRes.json()
+      }
+
+      // Create the post
+      setPostingStatus('Posting...')
       const res = await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,15 +109,14 @@ export default function BlogForm({ onPostCreated }: BlogFormProps) {
           content: content.trim(),
           tags: tags.trim(),
           author: author,
-          images: images
-        })
+          images: images,
+        }),
       })
 
       if (res.ok) {
         setTitle('')
         setContent('')
-        setImageUrl('')
-        setImages([])
+        setSelectedFiles([])
         setTags('')
         setSuccess(true)
         setTimeout(() => setSuccess(false), 2000)
@@ -81,6 +129,7 @@ export default function BlogForm({ onPostCreated }: BlogFormProps) {
       alert('Error creating post')
     } finally {
       setPosting(false)
+      setPostingStatus('')
     }
   }
 
@@ -90,7 +139,7 @@ export default function BlogForm({ onPostCreated }: BlogFormProps) {
   return (
     <div className="new-post-form">
       <div className="form-header">
-        <span className="form-icon">✎</span>
+        <span className="form-icon">&#x270E;</span>
         <h2>New Post</h2>
       </div>
 
@@ -142,30 +191,26 @@ export default function BlogForm({ onPostCreated }: BlogFormProps) {
         </div>
 
         <div className="form-control">
-          <label>Image URLs</label>
-          <div className="image-url-input">
-            <input
-              type="text"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddUrl())}
-            />
-            <button type="button" onClick={handleAddUrl} className="add-url-btn">
-              Add URL
-            </button>
-          </div>
-          {images.length > 0 && (
+          <label>Images</label>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileSelect}
+            className="file-input"
+          />
+          {selectedFiles.length > 0 && (
             <div className="image-previews">
-              {images.map((img, idx) => (
+              {selectedFiles.map((sf, idx) => (
                 <div key={idx} className="image-preview-item">
-                  <img src={img} alt={`Preview ${idx + 1}`} />
+                  <img src={sf.preview} alt={`Preview ${idx + 1}`} />
                   <button
                     type="button"
-                    onClick={() => handleRemoveImage(idx)}
+                    onClick={() => handleRemoveFile(idx)}
                     className="remove-image-btn"
                   >
-                    ×
+                    &times;
                   </button>
                 </div>
               ))}
@@ -186,7 +231,7 @@ export default function BlogForm({ onPostCreated }: BlogFormProps) {
         </div>
 
         <button type="submit" className="submit-btn" disabled={posting}>
-          {posting ? 'Posting...' : success ? 'Posted!' : 'Publish Post'}
+          {posting ? postingStatus || 'Posting...' : success ? 'Posted!' : 'Publish Post'}
         </button>
       </form>
     </div>
