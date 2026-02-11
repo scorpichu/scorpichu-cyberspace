@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "supabase": {
+      "type": "http",
+      "url": "${MCP_SUPABASE_URL}"
+    }
+  }
+}
