@@ -140,11 +140,11 @@
                         const sidebarPrev = document.getElementById('prev-btn');
                         const sidebarNext = document.getElementById('next-btn');
                         const nowTitle = document.getElementById('now-playing-title') || null;
-                        const nowArtist = document.getElementById('now-playing-artist') || null;
                         const footerSong = document.getElementById('footer-song') || null;
 
                         let audio = new Audio();
                         audio.preload = 'auto';
+                        audio.crossOrigin = 'anonymous';
                         let playlist = [];
                         let index = 0;
                         let playing = false;
@@ -186,28 +186,55 @@
                             playCurrent().catch(()=>{});
                         }
 
-                        audio.addEventListener('ended', ()=>{
-                            playNext();
-                        });
+                        audio.addEventListener('ended', ()=>{ playNext(); });
 
-                        // load playlist
+                        function showUnmuteButton(){
+                            if(document.getElementById('unmute-btn')) return;
+                            const btn = document.createElement('button');
+                            btn.id = 'unmute-btn';
+                            btn.textContent = 'Unmute';
+                            btn.style.position = 'fixed';
+                            btn.style.right = '16px';
+                            btn.style.bottom = '64px';
+                            btn.style.zIndex = '10000';
+                            btn.style.background = '#ff6b6b';
+                            btn.style.color = '#fff';
+                            btn.style.border = 'none';
+                            btn.style.padding = '8px 12px';
+                            btn.style.borderRadius = '8px';
+                            btn.style.cursor = 'pointer';
+                            btn.addEventListener('click', ()=>{
+                                audio.muted = false;
+                                audio.play().catch(()=>{});
+                                btn.remove();
+                                setIconsPlaying(true);
+                            });
+                            document.body.appendChild(btn);
+                        }
+
+                        // load playlist and attempt unmuted autoplay, fallback to muted autoplay
                         fetch('assets/audio/list.json').then(r=>r.json()).then(list=>{
                             if(!Array.isArray(list) || list.length===0) return;
                             playlist = list;
                             index = 0;
-                            // try autoplay; if blocked, show play button for user to start
+                            audio.muted = false;
                             playCurrent().catch(()=>{
-                                // autoplay blocked — show play button (already visible)
-                                setIconsPlaying(false);
+                                // unmuted autoplay blocked — try muted autoplay
+                                audio.muted = true;
+                                playCurrent().catch(()=>{});
+                                // show an Unmute button so users can enable sound immediately
+                                showUnmuteButton();
                             });
                         }).catch(()=>{
-                            // no playlist or error — leave UI as-is
+                            // no playlist or error
                         });
 
                         // floating toggle
                         if(toggle) toggle.addEventListener('click', ()=>{
                             if(!playlist.length) { alert('No audio files configured. Put your MP3s in assets/audio and list them in assets/audio/list.json'); return; }
                             if(audio.paused){
+                                // if currently muted but user explicitly requested play, unmute
+                                if(audio.muted) audio.muted = false;
                                 playCurrent().catch(()=>{ alert('Playback blocked. Interact with the page and try again.'); });
                             } else {
                                 audio.pause();
@@ -220,12 +247,9 @@
                         if(sidebarNext) sidebarNext.addEventListener('click', ()=>{ playNext(); });
                         if(sidebarPrev) sidebarPrev.addEventListener('click', ()=>{ playPrev(); });
 
-                        // volume slider sync (if present)
+                        // volume slider
                         const vol = document.getElementById('volume-slider');
-                        if(vol){
-                            audio.volume = Number(vol.value)/100;
-                            vol.addEventListener('input', ()=>{ audio.volume = Number(vol.value)/100; });
-                        }
+                        if(vol){ audio.volume = Number(vol.value)/100; vol.addEventListener('input', ()=>{ audio.volume = Number(vol.value)/100; }); }
 
                     })();
                 </script>
