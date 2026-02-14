@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/',
+        destination: '/pages/scorpihome.html',
+        permanent: false,
+      },
+      {
         source: '/blog',
         destination: '/pages/scorpiblog.html',
         permanent: false,
