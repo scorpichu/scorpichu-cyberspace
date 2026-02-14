@@ -14,6 +14,15 @@ export default function MusicPlayer() {
 
   const currentSong = songs[currentSongIndex]
 
+  useEffect(() => {
+    const savedVolume = window.localStorage.getItem('siteVolume')
+    if (!savedVolume) return
+    const parsedVolume = Number(savedVolume)
+    if (!Number.isNaN(parsedVolume)) {
+      setVolume(Math.max(0, Math.min(100, parsedVolume)))
+    }
+  }, [])
+
   // Initialize audio element
   useEffect(() => {
     const audio = new Audio(currentSong.src)
@@ -45,6 +54,7 @@ export default function MusicPlayer() {
     if (audioRef.current) {
       audioRef.current.volume = volume / 100
     }
+    window.localStorage.setItem('siteVolume', String(volume))
   }, [volume])
 
   // Audio event listeners
