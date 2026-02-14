@@ -7,7 +7,7 @@
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" media="all">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Retro 2000s Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=DotGothic16&family=Nunito:wght@400;700;900&family=Orbitron:wght@400;600&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&family=Varela+Round&family=VT323&display=swap" rel="stylesheet">
   </head>
   <body>
   
@@ -985,6 +985,119 @@
                     font-size: 0.8rem;
                 }
             }
+            /* ===== Frutiger / iCarly UI Theme Overrides ===== */
+            :root {
+                --blue: #2f7edb;
+                --light-blue: #78cfff;
+                --dark-blue: #0f4f97;
+                --bg: #f6fcff;
+                --neon-cyan: #7ef7ff;
+                --aero-pink: #ff9fdf;
+                --aero-lavender: #c9b6ff;
+                --channel-blue: linear-gradient(180deg, #ffffff 0%, #e7f5ff 50%, #cbe9ff 100%);
+            }
+
+            body {
+                font-family: 'Varela Round', 'Nunito', sans-serif;
+                background: radial-gradient(circle at 20% 20%, #ffffff 0%, #f3fbff 36%, #d8f4ff 66%, #f2ddff 100%);
+                min-height: 100vh;
+                position: relative;
+            }
+
+            h1, h2, h3 {
+                font-family: 'Orbitron', 'VT323', sans-serif;
+                letter-spacing: 0.8px;
+            }
+
+            #navbar li a,
+            .player-btn,
+            footer,
+            .recent-post-read-more {
+                font-family: 'Rajdhani', 'DotGothic16', sans-serif;
+            }
+
+            body::before,
+            body::after {
+                content: '';
+                position: fixed;
+                border-radius: 999px;
+                pointer-events: none;
+                z-index: 0;
+                background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(153, 236, 255, 0.45), rgba(255, 182, 226, 0.3));
+                box-shadow: inset 0 6px 12px rgba(255,255,255,0.75), 0 14px 30px rgba(70, 159, 218, 0.22), 0 0 18px rgba(255, 143, 208, 0.2);
+            }
+
+            body::before {
+                width: 150px;
+                height: 150px;
+                top: 110px;
+                right: 5%;
+            }
+
+            body::after {
+                width: 90px;
+                height: 90px;
+                top: 360px;
+                left: 4%;
+            }
+
+            #container {
+                position: relative;
+                z-index: 1;
+            }
+
+            #header {
+                border-radius: 22px;
+                border: 1px solid #b4e4ff;
+                box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.85), 0 14px 30px rgba(31, 111, 182, 0.2);
+            }
+
+            #navbar {
+                background: linear-gradient(180deg, #a3e9ff 0%, #5ebdf5 46%, #2f8fdf 100%);
+                border: 1px solid #7ab9e8;
+                border-radius: 18px;
+                box-shadow: inset 0 2px 0 rgba(255,255,255,0.7), 0 8px 18px rgba(30, 118, 194, 0.2), 0 0 14px rgba(165, 243, 255, 0.35);
+            }
+
+            #navbar li a {
+                background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08));
+                border-radius: 999px;
+                border: 1px solid rgba(255,255,255,0.4);
+            }
+
+            #profile-section,
+            aside,
+            main,
+            .box,
+            .recent-post {
+                background: var(--channel-blue);
+                border: 1px solid #9ad8ff;
+                border-radius: 18px;
+                box-shadow: inset 0 2px 0 rgba(255,255,255,0.92), 0 10px 20px rgba(49,130,206,0.15);
+            }
+
+            .player-btn,
+            .recent-post-read-more {
+                border-radius: 999px;
+                border: 1px solid #61afe8;
+                background: linear-gradient(180deg, #b8f3ff 0%, #75c6ff 45%, #4f98ea 78%, #6e95ff 100%);
+                box-shadow: inset 0 2px 0 rgba(255,255,255,0.65), 0 5px 12px rgba(31, 118, 191, 0.27), 0 0 10px rgba(145, 237, 255, 0.24);
+            }
+
+            footer {
+                background: linear-gradient(180deg, #79ccff 0%, #3b97e4 60%, #297fcf 100%);
+                border-radius: 18px;
+                border: 1px solid #76b8e7;
+                box-shadow: inset 0 2px 0 rgba(255,255,255,0.65), 0 8px 16px rgba(31,114,187,0.22);
+            }
+
+            @media only screen and (max-width: 800px) {
+                body::before,
+                body::after {
+                    display: none;
+                }
+            }
+
         </style>
 
                <!-- JavaScript for VISUAL-ONLY Music Player -->
@@ -1256,7 +1369,7 @@
                                     </div>` 
                                     : ''
                                 }
-                                <a href="https://scorpichu.neocities.org/scorpiblog#${post.id}" class="recent-post-read-more">Read Full Post →</a>
+                                <a href="/blog#${post.id}" class="recent-post-read-more">Read Full Post →</a>
                             `;
                             
                             container.appendChild(postElement);
@@ -1265,7 +1378,7 @@
                     } catch (error) {
                         console.error('Error loading recent blog posts:', error);
                         const container = document.getElementById('recent-posts-container');
-                        container.innerHTML = '<div class="recent-post-error"><p>Unable to load recent blog posts. Please visit the <a href="https://scorpichu.neocities.org/scorpiblog">blog page</a> directly.</p></div>';
+                        container.innerHTML = '<div class="recent-post-error"><p>Unable to load recent blog posts. Please visit the <a href="/blog">blog page</a> directly.</p></div>';
                     }
                 }
                 
