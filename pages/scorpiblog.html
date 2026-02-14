@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts | Naomi's Cyberspace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=DotGothic16&family=Nunito:wght@400;700;900&family=Orbitron:wght@400;600&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&family=Varela+Round&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        /* All your existing CSS remains exactly the same */
+        :root {
+            --blue: #3182ce;
+            --light-blue: #63b3ed;
+            --dark-blue: #2c5282;
+            --bg: #ebf8ff;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            background: var(--bg);
+            color: #2d3748;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'VT323', monospace;
+            color: var(--dark-blue);
+            letter-spacing: 1px;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 2rem; margin: 1.5rem 0 1rem; border-bottom: 2px dashed var(--light-blue); padding-bottom: 5px; }
+        h3 { font-size: 1.5rem; }
+
+        #container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #header {
+            height: 150px;
+            background: url('https://i.pinimg.com/736x/30/7c/95/307c95cae4caf188af3ed0e564ef5131.jpg') center/cover;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        #navbar {
+            background: linear-gradient(90deg, var(--blue), var(--light-blue));
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        #navbar ul {
+            display: flex;
+            padding: 10px;
+            margin: 0;
+            list-style: none;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        #navbar a {
+            color: white;
+            text-decoration: none;
+            font-family: 'DotGothic16', sans-serif;
+            padding: 8px 18px;
+            border-radius: 4px;
+            transition: background 0.3s;
+            font-size: 1.1rem;
+        }
+
+        #navbar a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        #flex {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        aside {
+            width: 220px;
+            background: #e6fffa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #b2f5ea;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        main {
+            flex: 1;
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .box {
+            background: #f0f9ff;
+            border: 1px solid #90cdf4;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* User Info Section */
+        .user-info-section {
+            background: #f8fdff;
+            border: 2px solid var(--light-blue);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .user-info-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #cbd5e0;
+        }
+
+        .user-info-icon {
+            background: var(--blue);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .user-info-control {
+            margin-bottom: 15px;
+        }
+
+        .user-info-control label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--dark-blue);
+            font-family: 'DotGothic16', sans-serif;
+            font-weight: bold;
+        }
+
+        .user-info-control input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            background: #f7fafc;
+            transition: border 0.3s;
+        }
+
+        .user-info-control input:focus {
+            outline: none;
+            border-color: var(--blue);
+            background: white;
+        }
+
+        .current-user-display {
+            background: #e6fffa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #b2f5ea;
+            margin-top: 10px;
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .current-user-name {
+            color: var(--dark-blue);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .set-user-btn {
+            background: linear-gradient(135deg, var(--blue), var(--light-blue));
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-family: 'DotGothic16', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .set-user-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+
+        /* Twitter/Tumblr Style Blog Form */
+        .new-post-form {
+            background: var(--white);
+            border: 2px solid var(--light-blue);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #cbd5e0;
+        }
+
+        .form-header h3 {
+            margin: 0;
+            color: var(--dark-blue);
+            font-size: 1.8rem;
+        }
+
+        .form-icon {
+            background: var(--blue);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+
+        .form-control label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--dark-blue);
+            font-family: 'DotGothic16', sans-serif;
+            font-weight: bold;
+        }
+
+        .form-control input,
+        .form-control textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            background: #f7fafc;
+            transition: border 0.3s;
+        }
+
+        .form-control input:focus,
+        .form-control textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            background: white;
+        }
+
+        .form-control textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #cbd5e0;
+        }
+
+        .tag-input {
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        .tag-input input {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .tag-hint {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--blue), var(--light-blue));
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-family: 'DotGothic16', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+
+        .submit-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Multiple Image Upload Styling */
+        .multi-image-upload {
+            margin-top: 10px;
+        }
+
+        .image-upload-area {
+            padding: 10px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: border 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .image-upload-area:hover {
+            border-color: var(--blue);
+            background: #f0f9ff;
+        }
+
+        .image-upload-area label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        .image-upload-area i {
+            font-size: 2rem;
+            color: var(--blue);
+            margin-bottom: 8px;
+        }
+
+        .image-url-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-url-input input {
+            flex: 1;
+            padding: 8px 12px;
+        }
+
+        .add-url-btn {
+            background: var(--light-blue);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .add-url-btn:hover {
+            background: var(--blue);
+        }
+
+        .image-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .image-preview-item {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--light-blue);
+            position: relative;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(245, 101, 101, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .remove-image-btn:hover {
+            background: #f56565;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .character-count.warning {
+            color: #ed8936;
+        }
+
+        .character-count.error {
+            color: #f56565;
+        }
+
+        /* Blog Post Styling */
+        .blog-post {
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px dotted #cbd5e0;
+            position: relative;
+        }
+
+        .post-date {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .post-author {
+            color: var(--blue);
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            margin: 20px 0;
+        }
+
+        .post-content p {
+            margin-bottom: 15px;
+        }
+
+        .blog-image {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 10px;
+            border: 3px solid var(--light-blue);
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--light-blue);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #4a5568;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .tags {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: #bee3f8;
+            color: var(--dark-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        /* User Generated Posts */
+        .user-post {
+            animation: fadeIn 0.5s ease;
+            background: #f8fdff;
+            border-left: 4px solid var(--blue);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Delete Post Button */
+        .delete-post-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            color: #718096;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: color 0.3s, background 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .delete-post-btn:hover {
+            color: #f56565;
+            background: rgba(245, 101, 101, 0.1);
+        }
+
+        /* Simplified Music Player */
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .player-btn {
+            background: var(--blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: background 0.2s;
+        }
+
+        .player-btn:hover {
+            background: var(--dark-blue);
+        }
+
+        .progress-container {
+            background: #cbd5e0;
+            height: 6px;
+            border-radius: 3px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--blue);
+            height: 100%;
+            width: 45%;
+        }
+
+        .playlist-item {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .playlist-item.active {
+            background: #bee3f8;
+            color: var(--dark-blue);
+        }
+
+        .playlist-item:hover {
+            background: #ebf8ff;
+        }
+
+        .song-number {
+            color: #718096;
+            margin-right: 10px;
+            min-width: 25px;
+        }
+
+        .album-art {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--blue), var(--light-blue));
+            border-radius: 8px;
+            margin: 0 auto 10px;
+            display: grid;
+            place-items: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        footer {
+            background: linear-gradient(90deg, var(--blue), var(--light-blue));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--dark-blue);
+            text-decoration: underline;
+        }
+
+        /* Blog Index Sidebar */
+        .blog-index {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .blog-index-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #f7fafc;
+            border-left: 3px solid var(--light-blue);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .blog-index-item:hover {
+            background: #edf2f7;
+            border-left-color: var(--blue);
+        }
+
+        .blog-index-title {
+            font-weight: bold;
+            color: var(--dark-blue);
+            display: block;
+            margin-right: 25px;
+        }
+
+        .blog-index-date {
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        .delete-index-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: transparent;
+            color: #718096;
+            border: none;
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+
+        .delete-index-btn:hover {
+            color: #f56565;
+        }
+
+        /* ===== Wii / Frutiger Aero Theme Overrides ===== */
+        :root {
+            --blue: #2f7edb;
+            --light-blue: #78cfff;
+            --dark-blue: #0f4f97;
+            --neon-cyan: #7ef7ff;
+            --aero-pink: #ff9fdf;
+            --aero-lavender: #c9b6ff;
+            --bg: #f6fcff;
+            --channel-blue: linear-gradient(180deg, #ffffff 0%, #e7f5ff 50%, #cbe9ff 100%);
+            --glass-blue: rgba(140, 213, 255, 0.38);
+        }
+
+        body {
+            font-family: 'Varela Round', 'Nunito', sans-serif;
+            background: radial-gradient(circle at 20% 20%, #ffffff 0%, #f3fbff 36%, #d8f4ff 66%, #f2ddff 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Orbitron', 'VT323', sans-serif;
+            letter-spacing: 0.8px;
+        }
+
+        #navbar a,
+        .set-user-btn,
+        .submit-btn,
+        .add-url-btn,
+        .attach-select-btn,
+        .suggested-tag-btn,
+        .post-author,
+        .post-date {
+            font-family: 'Rajdhani', 'DotGothic16', sans-serif;
+            font-weight: 700;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(153, 236, 255, 0.45), rgba(255, 182, 226, 0.3));
+            box-shadow: inset 0 6px 12px rgba(255,255,255,0.75), 0 14px 30px rgba(70, 159, 218, 0.22), 0 0 18px rgba(255, 143, 208, 0.2);
+        }
+
+        body::before {
+            width: 150px;
+            height: 150px;
+            top: 110px;
+            right: 5%;
+        }
+
+        body::after {
+            width: 90px;
+            height: 90px;
+            top: 360px;
+            left: 4%;
+        }
+
+        #container {
+            position: relative;
+            z-index: 1;
+        }
+
+        #header {
+            border-radius: 22px;
+            border: 1px solid #b4e4ff;
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.85), 0 14px 30px rgba(31, 111, 182, 0.2);
+        }
+
+        #navbar {
+            background: linear-gradient(180deg, #a3e9ff 0%, #5ebdf5 46%, #2f8fdf 100%);
+            border: 1px solid #7ab9e8;
+            border-radius: 18px;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.7), 0 8px 18px rgba(30, 118, 194, 0.2), 0 0 14px rgba(165, 243, 255, 0.35);
+        }
+
+        #navbar a {
+            background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08));
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        #navbar a:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.16));
+        }
+
+        aside,
+        main {
+            background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
+            border: 1px solid #bde6ff;
+            border-radius: 22px;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.9), 0 12px 26px rgba(59, 142, 208, 0.14);
+        }
+
+        .box,
+        .user-info-section,
+        .new-post-form,
+        .blog-post,
+        .blog-index {
+            background: var(--channel-blue);
+            border: 1px solid #9ad8ff;
+            border-radius: 18px;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.92), 0 10px 20px rgba(49,130,206,0.15);
+        }
+
+        .box h2,
+        .user-info-header h3,
+        .form-header h3,
+        .blog-post h2 {
+            color: #09539b;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.85);
+        }
+
+        .user-info-header,
+        .form-header {
+            border-bottom: 1px solid #b8e5ff;
+            background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(219,241,255,0.5));
+            margin: -20px -20px 16px;
+            padding: 12px 16px;
+            border-radius: 16px 16px 12px 12px;
+        }
+
+        .user-info-icon,
+        .form-icon {
+            background: linear-gradient(180deg, #70c8ff 0%, #3d95e3 100%);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.55), 0 4px 9px rgba(30, 115, 188, 0.35);
+        }
+
+        .user-info-control input,
+        .form-control input,
+        .form-control textarea,
+        .tag-input input {
+            border: 1px solid #9fd6f8;
+            background: linear-gradient(180deg, #ffffff 0%, #f2faff 100%);
+            border-radius: 12px;
+            box-shadow: inset 0 1px 4px rgba(20, 95, 163, 0.08);
+        }
+
+        .set-user-btn,
+        .submit-btn,
+        .add-url-btn,
+        .player-btn,
+        .attach-select-btn,
+        .suggested-tag-btn {
+            border-radius: 999px;
+            border: 1px solid #61afe8;
+            background: linear-gradient(180deg, #b8f3ff 0%, #75c6ff 45%, #4f98ea 78%, #6e95ff 100%);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.65), 0 5px 12px rgba(31, 118, 191, 0.27), 0 0 10px rgba(145, 237, 255, 0.24);
+            color: #ffffff;
+        }
+
+        .set-user-btn:hover,
+        .submit-btn:hover,
+        .add-url-btn:hover,
+        .player-btn:hover,
+        .attach-select-btn:hover,
+        .suggested-tag-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.03);
+        }
+
+        .form-footer {
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .tag-input {
+            min-width: 280px;
+        }
+
+        .tag-suggestions {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggested-tag-btn {
+            border: 1px solid #89bdf1;
+            padding: 6px 12px;
+            font-size: 0.88rem;
+            cursor: pointer;
+        }
+
+        .multi-image-upload {
+            display: grid;
+            gap: 10px;
+        }
+
+        .attachment-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .attach-select-btn {
+            border: 1px solid #89bdf1;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .image-upload-area {
+            background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(218,246,255,0.65));
+            border: 2px dashed #95d8ff;
+            border-radius: 14px;
+        }
+
+        .image-upload-area i {
+            color: #3f8fd8;
+            text-shadow: 0 0 8px rgba(147, 239, 255, 0.45);
+        }
+
+        .image-url-input {
+            flex-wrap: wrap;
+        }
+
+        .image-url-input input {
+            min-width: 220px;
+        }
+
+        .image-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            width: 100%;
+        }
+
+        .image-preview-item {
+            width: 100%;
+            height: auto;
+            min-height: 130px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2px solid #97d6f7;
+            position: relative;
+            background: linear-gradient(180deg, #ffffff 0%, #e9f8ff 100%);
+            padding: 8px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 88px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .image-preview-item.audio-preview {
+            min-height: 100px;
+        }
+
+        .attachment-preview-meta {
+            font-size: 0.8rem;
+            color: #2d5f8f;
+            word-break: break-word;
+            line-height: 1.25;
+        }
+
+        .attachment-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #0f4f97;
+            background: linear-gradient(180deg, #ffffff 0%, #c8ebff 100%);
+            border: 1px solid #8bc6e8;
+        }
+
+        .audio-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1f5f95;
+            font-size: 0.88rem;
+        }
+
+        .audio-attachments {
+            margin-top: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .audio-attachment {
+            background: linear-gradient(180deg, #fbfeff 0%, #e8f7ff 100%);
+            border: 1px solid #96ccef;
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .audio-title {
+            font-family: 'Rajdhani', sans-serif;
+            color: #0e5fa8;
+            margin-bottom: 6px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .audio-attachment audio {
+            width: 100%;
+        }
+
+        .blog-post {
+            padding: 58px 22px 22px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #9ed8f8;
+        }
+
+        .blog-post h2 {
+            margin-top: 0;
+            margin-right: 105px;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .delete-post-btn {
+            top: 14px;
+            right: 14px;
+            z-index: 2;
+            border-radius: 999px;
+            border: 1px solid #a4d2f0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(216,240,255,0.88));
+            color: #2f6ea9;
+            padding: 7px 10px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+
+        .delete-post-btn:hover {
+            color: #d64f9a;
+            background: linear-gradient(180deg, #fff3fb 0%, #ffe3f5 100%);
+            border-color: #f5a8d3;
+        }
+
+        #blog-posts-container {
+            display: grid;
+            gap: 16px;
+        }
+
+        .tags .tag {
+            background: linear-gradient(180deg, #eaf7ff 0%, #d0edff 100%);
+            border: 1px solid #8fcbef;
+            border-radius: 999px;
+            color: #0b5ca7;
+        }
+
+        .playlist-item,
+        .blog-index-item {
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .playlist-item.active,
+        .blog-index-item:hover {
+            background: linear-gradient(180deg, #eef9ff 0%, #d8efff 100%);
+            border-color: #9ed4f5;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+
+        footer {
+            background: linear-gradient(180deg, #79ccff 0%, #3b97e4 60%, #297fcf 100%);
+            border-radius: 18px;
+            border: 1px solid #76b8e7;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.65), 0 8px 16px rgba(31,114,187,0.22);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            #flex {
+                flex-wrap: wrap;
+            }
+            aside {
+                width: 100%;
+            }
+            #navbar ul {
+                gap: 10px;
+            }
+            .blog-image {
+                max-width: 100%;
+            }
+            .form-footer {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            .tag-input {
+                margin-right: 0;
+                width: 100%;
+                min-width: 0;
+            }
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .blog-post h2 {
+                margin-right: 0;
+            }
+
+            .delete-post-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-left: auto;
+                display: inline-flex;
+                margin-bottom: 8px;
+            }
+
+            body::before,
+            body::after {
+                display: none;
+            }
+
+            aside,
+            main,
+            #header,
+            #navbar,
+            footer {
+                border-radius: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header"></div>
+        
+        <nav id="navbar">
+            <ul>
+                <li><a href="https://scorpichu.neocities.org/scorpihome">Home</a></li>
+                        <li><a href="https://www.instagram.com/chiu.naomi?igsh=eTJreXk2bXE5YTRo&utm_source=qr">IG</a></li>
+                        <li><a href="https://scorpichu.neocities.org/scorpiblog">Blogs</a></li>
+                        <li><a href="https://open.spotify.com/user/21xhnqjpsvn2oftzl54jjsdly?si=00ba03e6a898488e">Spotify</a></li>
+            </ul>
+        </nav>
+
+        <div id="flex">
+            <!-- LEFT SIDEBAR WITH MUSIC PLAYER & BLOG INDEX -->
+            <aside>
+                <h2>Music Player</h2>
+                <div class="box">
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <div style="font-weight: bold; color: var(--dark-blue);">404 (New Era)</div>
+                        <div style="color: #4a5568; font-size: 12px;">KiiiKiii</div>
+                    </div>
+                    
+                    <div class="player-controls">
+                        <button class="player-btn"><i class="fas fa-backward"></i></button>
+                        <button class="player-btn"><i class="fas fa-pause"></i></button>
+                        <button class="player-btn"><i class="fas fa-forward"></i></button>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <div class="playlist-item active">
+                            <span class="song-number">01</span>
+                            <span>KiiiKiii - 404 (New Era)</span>
+                        </div>
+                        <div class="playlist-item">
+                            <span class="song-number">02</span>
+                            <span>YUKIKA - Insomnia</span>
+                        </div>
+                        <div class="playlist-item">
+                            <span class="song-number">03</span>
+                            <span>The Deep - Makeup</span>
+                        </div>
+                        <div class="playlist-item">
+                            <span class="song-number">04</span>
+                            <span>Yves - Diorama</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2>Blog Index</h2>
+                <div class="box blog-index" id="blog-index-list">
+                    <!-- Blog index items will be dynamically added here -->
+                    <div class="blog-index-item" data-post-id="post2">
+                        <a href="#post2" class="blog-index-title">Current Visual Obsessions</a>
+                        <div class="blog-index-date">February 10, 2026 at 2:00 AM</div>
+                        <button class="delete-index-btn" data-post-id="post2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="blog-index-item" data-post-id="post1">
+                        <a href="#post1" class="blog-index-title">Website Launch & Aesthetic</a>
+                        <div class="blog-index-date">February 10, 2026 at 2:00 AM</div>
+                        <button class="delete-index-btn" data-post-id="post1">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- MAIN BLOG CONTENT AREA -->
+            <main>
+                <h1>scorpiblog...</h1>
+                <p style="color: #4a5568; margin-bottom: 30px;">ANYTHING ANYWHERE ANYTIME</p>
+                
+                <!-- NEW: User Identification Section -->
+                <div class="user-info-section">
+                    <div class="user-info-header">
+                        <div class="user-info-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3>Who's Posting?</h3>
+                    </div>
+                    
+                    <div class="user-info-control">
+                        <label for="user-name"><i class="fas fa-user-edit"></i> Set Your Display Name</label>
+                        <input type="text" id="user-name" placeholder="Enter your name for posts..." maxlength="20">
+                        <div class="current-user-display">
+                            Current poster: <span class="current-user-name" id="current-user-name">naomi</span>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        <button class="set-user-btn" id="set-user-btn">
+                            <i class="fas fa-check"></i>
+                            <span>Set Name</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Twitter/Tumblr Style Blog Form -->
+                <div class="new-post-form" id="new-post-form">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <h3>Add New Blog Post</h3>
+                    </div>
+                    
+                    <div class="form-control">
+                        <label for="post-title"><i class="fas fa-heading"></i> Post Title</label>
+                        <input type="text" id="post-title" placeholder="What's on your mind?" maxlength="100">
+                        <div class="character-count" id="title-count">0/100</div>
+                    </div>
+                    
+                    <div class="form-control">
+                        <label for="post-content"><i class="fas fa-edit"></i> Content</label>
+                        <textarea id="post-content" placeholder="Write your blog post here... You can add as much text as you want!" maxlength="5000"></textarea>
+                        <div class="character-count" id="content-count">0/5000</div>
+                    </div>
+                    
+                    <div class="form-control">
+                        <label><i class="fas fa-paperclip"></i> Add Attachments (Photos or MP3s)</label>
+                        <div class="multi-image-upload">
+                            <div class="image-upload-area">
+                                <label>
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Pick multiple files for your post ✨</span>
+                                </label>
+                                <div class="attachment-picker">
+                                    <button type="button" class="attach-select-btn" id="select-images-btn"><i class="fas fa-image"></i> Choose Photos</button>
+                                    <button type="button" class="attach-select-btn" id="select-audio-btn"><i class="fas fa-music"></i> Choose MP3s</button>
+                                </div>
+                                <input type="file" id="post-images" accept="image/*" multiple style="display: none;">
+                                <input type="file" id="post-audio" accept="audio/mpeg,audio/mp3,audio/*" multiple style="display: none;">
+                            </div>
+                            
+                            <div class="image-url-input">
+                                <input type="text" id="image-url" placeholder="Or paste image/mp3 URL here...">
+                                <button class="add-url-btn" id="add-url-btn">
+                                    <i class="fas fa-plus"></i> Add URL
+                                </button>
+                            </div>
+                            
+                            <div class="image-previews" id="image-previews">
+                                <!-- Image previews will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <div class="tag-input">
+                            <label for="post-tags"><i class="fas fa-tags"></i> Tags (comma separated)</label>
+                            <input type="text" id="post-tags" list="tag-suggestions-list" placeholder="web design, aesthetic, personal, yuri...">
+                            <datalist id="tag-suggestions-list">
+                                <option value="frutiger aero"></option>
+                                <option value="cybercore"></option>
+                                <option value="y2k"></option>
+                                <option value="music"></option>
+                                <option value="yuri"></option>
+                                <option value="fashion"></option>
+                                <option value="retro gaming"></option>
+                                <option value="web design"></option>
+                                <option value="aesthetic"></option>
+                                <option value="daily update"></option>
+                            </datalist>
+                            <div class="tag-hint">Add up to 5 tags separated by commas, or tap suggestions:</div>
+                            <div class="tag-suggestions" id="suggested-tags">
+                                <button type="button" class="suggested-tag-btn" data-tag="frutiger aero">frutiger aero</button>
+                                <button type="button" class="suggested-tag-btn" data-tag="cybercore">cybercore</button>
+                                <button type="button" class="suggested-tag-btn" data-tag="retro gaming">retro gaming</button>
+                                <button type="button" class="suggested-tag-btn" data-tag="yuri">yuri</button>
+                                <button type="button" class="suggested-tag-btn" data-tag="music">music</button>
+                                <button type="button" class="suggested-tag-btn" data-tag="iCarly vibes">iCarly vibes</button>
+                            </div>
+                        </div>
+                        
+                        <button class="submit-btn" id="submit-post">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Publish Post</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Blog posts will be dynamically added here -->
+                <div id="blog-posts-container">
+                    <!-- Blog Post 2: Current obsessions (2 AM) -->
+                    <div class="blog-post" id="post2">
+                        <button class="delete-post-btn" data-post-id="post2">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <h2>Current Aesthetic Obsessions</h2>
+                        <div class="post-date"><i class="far fa-calendar"></i> February 10, 2026 at 2:00 AM</div>
+                        <span class="post-author"><i class="fas fa-user"></i> Posted by: naomi</span>
+                        
+                        <div class="post-content">
+                            <p>My IG and pinterest boards are so chaotic but in the best way possible... currently deep into a very specific visual rabbit hole that blends Heisei-era retrofuturism with early web aesthetics, which is obvious looking at this webdesign LOL.</p>
+                            
+                            <p>but it's not just about how it looks, the reason why I added the "Music Playing..." tab is because I'm most inspired to create when I listen to music... SO I added the songs I was listening to when I was making this for yall to capture the feel.</p>
+                            
+                            <div class="image-grid">
+                                <img src="https://i.pinimg.com/736x/cb/fd/cc/cbfdcc9a7db7c20ddd16bba0c77a5c83.jpg" alt="Visual inspiration 1">
+                                <img src="https://i.pinimg.com/736x/30/7c/95/307c95cae4caf188af3ed0e564ef5131.jpg" alt="Visual inspiration 2">
+                            </div>
+                            <div class="image-caption">photo inspooo</div>
+                        </div>
+                        
+                        <div class="tags">
+                            <span class="tag">visual</span>
+                            <span class="tag">aesthetic</span>
+                            <span class="tag">heisei</span>
+                            <span class="tag">collage</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Blog Post 1: Website launch (2 AM) -->
+                    <div class="blog-post" id="post1">
+                        <button class="delete-post-btn" data-post-id="post1">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <h2>Website Launch & The Perfect Aesthetic</h2>
+                        <div class="post-date"><i class="far fa-calendar"></i> February 10, 2026 at 2:00 AM</div>
+                        <span class="post-author"><i class="fas fa-user"></i> Posted by: naomi</span>
+                        
+                        <div class="post-content">
+                            <p>Finally did it! After thinking about it for ages, I've carved out my own little corner of the internet. I wanted a space that felt authentically *me*—a mix of Y2K nostalgia, clean layouts, and that specific blue-toned calm111!!!!!</p>
+                            
+                            <p>The hardest part was coding. I learnt a bit of HTML from youtube videos, and used free online templates too! I surfed pinterest for inspo, and ultimately settled on a blue-white theme; but I totally will change it for new aesthetics I think. </p>
+                            
+                            <p>Here's a moodboard image that inspired the overall feel:</p>
+                            
+                            <img src="https://i.pinimg.com/736x/80/e7/6a/80e76af996d812ce01da3536f71821ea.jpg" alt="Aesthetic moodboard with blue tones and retro graphics" class="blog-image">
+                            <div class="image-caption">The color and texture inspiration for this site.</div>
+                            
+                            <p>Next up: actually writing some posts and maybe adding a yuri rec?</p>
+                        </div>
+                        
+                        <div class="tags">
+                            <span class="tag">web design</span>
+                            <span class="tag">aesthetic</span>
+                            <span class="tag">personal</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <div>
+                <i class="fas fa-music"></i>
+                <span>Now Playing: KiiiKiii - 404 (New Era)</span>
+            </div>
+            <div>© naomi's cyberspace 2026</div>
+        </footer>
+    </div>
+
+    <!-- JavaScript for the blog -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ==================== USER MANAGEMENT ====================
+            let currentUser = localStorage.getItem('blogUser') || 'naomi';
+            const currentUserNameElement = document.getElementById('current-user-name');
+            const setUserBtn = document.getElementById('set-user-btn');
+            const userNameInput = document.getElementById('user-name');
+            
+            // Initialize user display
+            currentUserNameElement.textContent = currentUser;
+            
+            // Set user name
+            setUserBtn.addEventListener('click', function() {
+                const newName = userNameInput.value.trim();
+                if (newName) {
+                    currentUser = newName;
+                    currentUserNameElement.textContent = currentUser;
+                    localStorage.setItem('blogUser', currentUser);
+                    userNameInput.value = '';
+                    
+                    // Show success message
+                    const originalText = setUserBtn.querySelector('span').textContent;
+                    setUserBtn.querySelector('span').textContent = 'Name Set!';
+                    setUserBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                    
+                    setTimeout(() => {
+                        setUserBtn.querySelector('span').textContent = originalText;
+                        setUserBtn.style.background = 'linear-gradient(135deg, var(--blue), var(--light-blue))';
+                    }, 2000);
+                }
+            });
+            
+            // Allow Enter key to set name
+            userNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    setUserBtn.click();
+                }
+            });
+            
+            // ==================== EXISTING MUSIC PLAYER CODE ====================
+            const playlist = document.querySelectorAll('.playlist-item');
+            const progressBar = document.querySelector('.progress-bar');
+            const nowPlayingSpan = document.querySelector('footer span');
+            let progress = 45;
+            
+            // Simple progress animation for music player
+            const progressInterval = setInterval(() => {
+                progress = (progress + 0.5) % 100;
+                progressBar.style.width = progress + '%';
+            }, 1000);
+            
+            // Playlist interaction
+            playlist.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    playlist.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Update footer "Now Playing"
+                    const songText = item.textContent.replace(/^\d+\s*/, '');
+                    nowPlayingSpan.textContent = 'Now Playing: ' + songText;
+                });
+            });
+            
+            // Music control buttons (visual only)
+            document.querySelectorAll('.player-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const icon = this.querySelector('i');
+                    // If it's the pause button, toggle play/pause
+                    if(icon.classList.contains('fa-pause') || icon.classList.contains('fa-play')) {
+                        icon.classList.toggle('fa-pause');
+                        icon.classList.toggle('fa-play');
+                    }
+                });
+            });
+            
+            // ==================== UPDATED BLOG POST FUNCTIONALITY ====================
+            // DOM Elements
+            const postForm = document.getElementById('new-post-form');
+            const postTitle = document.getElementById('post-title');
+            const postContent = document.getElementById('post-content');
+            const postTags = document.getElementById('post-tags');
+            const suggestedTags = document.getElementById('suggested-tags');
+            const postImages = document.getElementById('post-images');
+            const postAudio = document.getElementById('post-audio');
+            const selectImagesBtn = document.getElementById('select-images-btn');
+            const selectAudioBtn = document.getElementById('select-audio-btn');
+            const imageUrl = document.getElementById('image-url');
+            const addUrlBtn = document.getElementById('add-url-btn');
+            const imagePreviews = document.getElementById('image-previews');
+            const submitBtn = document.getElementById('submit-post');
+            const blogPostsContainer = document.getElementById('blog-posts-container');
+            const blogIndexList = document.getElementById('blog-index-list');
+            
+            // Character counters
+            const titleCount = document.getElementById('title-count');
+            const contentCount = document.getElementById('content-count');
+            
+            // Store attachments for current post (images + mp3)
+            let currentAttachments = [];
+            
+            // Character counter updates
+            postTitle.addEventListener('input', function() {
+                const length = this.value.length;
+                titleCount.textContent = `${length}/100`;
+                titleCount.className = 'character-count' + (length > 90 ? ' warning' : '');
+            });
+            
+            postContent.addEventListener('input', function() {
+                const length = this.value.length;
+                contentCount.textContent = `${length}/5000`;
+                if (length > 4500) {
+                    contentCount.className = 'character-count warning';
+                } else if (length > 4800) {
+                    contentCount.className = 'character-count error';
+                } else {
+                    contentCount.className = 'character-count';
+                }
+            });
+            
+            // Attachment chooser buttons
+            if (selectImagesBtn) {
+                selectImagesBtn.addEventListener('click', function() {
+                    postImages.click();
+                });
+            }
+
+            if (selectAudioBtn) {
+                selectAudioBtn.addEventListener('click', function() {
+                    postAudio.click();
+                });
+            }
+
+            // Multiple image upload handling
+            postImages.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+                files.forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            addAttachmentToPreview('image', event.target.result, file.name);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                postImages.value = '';
+            });
+
+            // Multiple MP3 upload handling
+            postAudio.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+                files.forEach(file => {
+                    if (file.type.startsWith('audio/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            addAttachmentToPreview('audio', event.target.result, file.name);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                postAudio.value = '';
+            });
+            
+            // Add image/audio URL
+            addUrlBtn.addEventListener('click', function() {
+                const url = imageUrl.value.trim();
+                if (url) {
+                    const cleanUrl = url.toLowerCase();
+                    const isAudioUrl = cleanUrl.endsWith('.mp3') || cleanUrl.includes('audio');
+                    addAttachmentToPreview(isAudioUrl ? 'audio' : 'image', url, isAudioUrl ? 'URL MP3' : 'URL Image');
+                    imageUrl.value = '';
+                }
+            });
+
+            // Suggested tags click handling
+            if (suggestedTags) {
+                suggestedTags.addEventListener('click', function(e) {
+                    const btn = e.target.closest('.suggested-tag-btn');
+                    if (!btn) return;
+                    addSuggestedTag(btn.dataset.tag);
+                });
+            }
+            
+            // Allow Enter key in URL field
+            imageUrl.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addUrlBtn.click();
+                }
+            });
+            
+            function addSuggestedTag(tag) {
+                if (!tag) return;
+                const existing = postTags.value
+                    .split(',')
+                    .map(t => t.trim())
+                    .filter(t => t.length > 0);
+
+                const hasTag = existing.some(t => t.toLowerCase() === tag.toLowerCase());
+                if (hasTag) return;
+
+                if (existing.length >= 5) {
+                    alert('You can add up to 5 tags.');
+                    return;
+                }
+
+                existing.push(tag);
+                postTags.value = existing.join(', ');
+                postTags.focus();
+            }
+
+            // Add attachment to preview
+            function addAttachmentToPreview(type, src, name) {
+                const attachmentId = 'att_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                currentAttachments.push({ id: attachmentId, type: type, src: src, name: name });
+
+                const previewItem = document.createElement('div');
+                previewItem.className = 'image-preview-item' + (type === 'audio' ? ' audio-preview' : '');
+                previewItem.dataset.attachmentId = attachmentId;
+
+                previewItem.innerHTML = type === 'image'
+                    ? `
+                        <span class="attachment-type">Photo</span>
+                        <img src="${src}" alt="${name}">
+                        <div class="attachment-preview-meta">${name}</div>
+                        <button class="remove-image-btn" data-attachment-id="${attachmentId}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `
+                    : `
+                        <span class="attachment-type">MP3</span>
+                        <div class="audio-chip"><i class="fas fa-music"></i><span>${name}</span></div>
+                        <audio controls preload="none" src="${src}"></audio>
+                        <button class="remove-image-btn" data-attachment-id="${attachmentId}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+
+                imagePreviews.appendChild(previewItem);
+
+                // Add remove event
+                previewItem.querySelector('.remove-image-btn').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const attachmentId = this.dataset.attachmentId;
+                    removeAttachmentFromPreview(attachmentId);
+                });
+            }
+
+            // Remove attachment from preview
+            function removeAttachmentFromPreview(attachmentId) {
+                currentAttachments = currentAttachments.filter(att => att.id !== attachmentId);
+                const previewItem = imagePreviews.querySelector(`[data-attachment-id="${attachmentId}"]`);
+                if (previewItem) {
+                    previewItem.remove();
+                }
+            }
+            
+            // Submit new blog post
+            submitBtn.addEventListener('click', function() {
+                const title = postTitle.value.trim();
+                const content = postContent.value.trim();
+                const tags = postTags.value.trim();
+                
+                // Validation
+                if (!title) {
+                    alert('Please enter a title for your post!');
+                    postTitle.focus();
+                    return;
+                }
+                
+                if (!content) {
+                    alert('Please write some content for your post!');
+                    postContent.focus();
+                    return;
+                }
+                
+                // Create new post
+                createNewPost(title, content, tags, currentAttachments);
+                
+                // Reset form
+                resetForm();
+                
+                // Scroll to new post
+                setTimeout(() => {
+                    const newPost = document.querySelector('.user-post:first-child');
+                    if (newPost) {
+                        window.scrollTo({
+                            top: newPost.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 100);
+            });
+            
+            // Create a new blog post
+            function renderAttachmentsHTML(attachments = [], author = currentUser) {
+                const normalized = normalizeAttachments(attachments);
+                const imageAttachments = normalized.filter(att => att.type === 'image');
+                const audioAttachments = normalized.filter(att => att.type === 'audio');
+
+                let imagesHTML = '';
+                if (imageAttachments.length > 0) {
+                    if (imageAttachments.length === 1) {
+                        imagesHTML = `
+                            <img src="${imageAttachments[0].src}" alt="${imageAttachments[0].name}" class="blog-image" onclick="expandImage('${imageAttachments[0].src}', '${imageAttachments[0].name}')">
+                            <div class="image-caption">Image posted by ${author}</div>
+                        `;
+                    } else {
+                        imagesHTML = `
+                            <div class="image-grid">
+                                ${imageAttachments.map(img => `<img src="${img.src}" alt="${img.name}" onclick="expandImage('${img.src}', '${img.name}')">`).join('')}
+                            </div>
+                            <div class="image-caption">${imageAttachments.length} images posted by ${author}</div>
+                        `;
+                    }
+                }
+
+                let audioHTML = '';
+                if (audioAttachments.length > 0) {
+                    audioHTML = `
+                        <div class="audio-attachments">
+                            ${audioAttachments.map(audio => `
+                                <div class="audio-attachment">
+                                    <div class="audio-title"><i class="fas fa-music"></i> ${audio.name}</div>
+                                    <audio controls preload="none" src="${audio.src}"></audio>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                return imagesHTML + audioHTML;
+            }
+
+            function normalizeAttachments(attachments = []) {
+                return (attachments || []).map(item => {
+                    if (item.type) return item;
+                    return { ...item, type: 'image' };
+                });
+            }
+
+            function createNewPost(title, content, tags, attachments = []) {
+                const postId = 'post_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                const currentDate = new Date();
+                const formattedDate = formatDate(currentDate);
+                
+                // Create tags HTML
+                let tagsHTML = '';
+                if (tags) {
+                    const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag).slice(0, 5);
+                    tagsHTML = tagArray.map(tag => `<span class="tag">${tag}</span>`).join('');
+                }
+                
+                const attachmentsHTML = renderAttachmentsHTML(attachments, currentUser);
+                
+                // Create new post element
+                const newPost = document.createElement('div');
+                newPost.className = 'blog-post user-post';
+                newPost.id = postId;
+                newPost.innerHTML = `
+                    <button class="delete-post-btn" data-post-id="${postId}">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                    <h2>${title}</h2>
+                    <div class="post-date"><i class="far fa-calendar"></i> ${formattedDate}</div>
+                    <span class="post-author"><i class="fas fa-user"></i> Posted by: ${currentUser}</span>
+                    
+                    <div class="post-content">
+                        ${content.split('\n').map(paragraph => `<p>${paragraph}</p>`).join('')}
+                        ${attachmentsHTML}
+                    </div>
+                    
+                    ${tagsHTML ? `<div class="tags">${tagsHTML}</div>` : ''}
+                `;
+                
+                // Insert new post in chronological order (newest first)
+                insertPostInChronologicalOrder(newPost, currentDate);
+                
+                // Add delete event to the new post
+                newPost.querySelector('.delete-post-btn').addEventListener('click', function() {
+                    deletePost(postId);
+                });
+                
+                // Add to blog index
+                addToBlogIndex(title, formattedDate, postId);
+                
+                // Save to localStorage
+                savePostToStorage({
+                    id: postId,
+                    title,
+                    content,
+                    tags,
+                    attachments: normalizeAttachments(attachments),
+                    images: normalizeAttachments(attachments).filter(att => att.type === 'image').map(att => ({ id: att.id, src: att.src, name: att.name })),
+                    author: currentUser,
+                    date: currentDate.toISOString()
+                });
+            }
+            
+            // Helper function to insert post in chronological order (newest first)
+            function insertPostInChronologicalOrder(newPost, postDate) {
+                const allPosts = blogPostsContainer.querySelectorAll('.blog-post');
+                let inserted = false;
+                
+                for (let i = 0; i < allPosts.length; i++) {
+                    const existingPost = allPosts[i];
+                    const existingPostDate = getPostDate(existingPost);
+                    
+                    // If new post is newer than existing post, insert before it
+                    if (postDate > existingPostDate) {
+                        blogPostsContainer.insertBefore(newPost, existingPost);
+                        inserted = true;
+                        break;
+                    }
+                }
+                
+                // If not inserted (oldest post), append to end
+                if (!inserted) {
+                    blogPostsContainer.appendChild(newPost);
+                }
+            }
+            
+            // Helper function to get date from a post element
+            function getPostDate(postElement) {
+                const dateText = postElement.querySelector('.post-date').textContent;
+                // Extract date from format like "February 10, 2026 at 2:00 AM"
+                const dateMatch = dateText.match(/(\w+) (\d+), (\d+) at (\d+):(\d+) (AM|PM)/);
+                if (dateMatch) {
+                    const [, month, day, year, hour, minute, ampm] = dateMatch;
+                    const months = {
+                        'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
+                        'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
+                    };
+                    const monthNum = months[month];
+                    let hourNum = parseInt(hour);
+                    if (ampm === 'PM' && hourNum !== 12) hourNum += 12;
+                    if (ampm === 'AM' && hourNum === 12) hourNum = 0;
+                    
+                    return new Date(year, monthNum, day, hourNum, minute);
+                }
+                return new Date(0); // Default to epoch if parsing fails
+            }
+            
+            // Image expansion function
+            window.expandImage = function(src, alt) {
+                // Create modal overlay
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                modal.style.zIndex = '1000';
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                modal.style.cursor = 'pointer';
+                
+                // Create expanded image
+                const expandedImg = document.createElement('img');
+                expandedImg.src = src;
+                expandedImg.alt = alt;
+                expandedImg.style.maxWidth = '90%';
+                expandedImg.style.maxHeight = '90%';
+                expandedImg.style.objectFit = 'contain';
+                expandedImg.style.borderRadius = '10px';
+                expandedImg.style.boxShadow = '0 0 30px rgba(0, 0, 0, 0.5)';
+                
+                // Create close button
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '20px';
+                closeBtn.style.right = '20px';
+                closeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+                closeBtn.style.color = 'white';
+                closeBtn.style.border = 'none';
+                closeBtn.style.borderRadius = '50%';
+                closeBtn.style.width = '40px';
+                closeBtn.style.height = '40px';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.style.fontSize = '1.2rem';
+                closeBtn.style.zIndex = '1001';
+                closeBtn.style.transition = 'background 0.3s';
+                
+                closeBtn.onmouseover = function() {
+                    this.style.background = 'rgba(255, 255, 255, 0.3)';
+                };
+                closeBtn.onmouseout = function() {
+                    this.style.background = 'rgba(255, 255, 255, 0.2)';
+                };
+                
+                // Add event to close modal
+                function closeModal() {
+                    document.body.removeChild(modal);
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                }
+                
+                modal.onclick = closeModal;
+                closeBtn.onclick = closeModal;
+                
+                // Prevent clicks on image from closing modal
+                expandedImg.onclick = function(e) {
+                    e.stopPropagation();
+                };
+                
+                // Add elements to modal
+                modal.appendChild(expandedImg);
+                modal.appendChild(closeBtn);
+                
+                // Add modal to body and disable scrolling
+                document.body.appendChild(modal);
+                document.body.style.overflow = 'hidden';
+                
+                // Allow ESC key to close modal
+                document.addEventListener('keydown', function escClose(e) {
+                    if (e.key === 'Escape') {
+                        closeModal();
+                        document.removeEventListener('keydown', escClose);
+                    }
+                });
+            };
+            
+            // Delete a post
+            function deletePost(postId) {
+                if (confirm('Are you sure you want to delete this post?')) {
+                    // Remove post from DOM
+                    const postElement = document.getElementById(postId);
+                    if (postElement) {
+                        postElement.remove();
+                    }
+                    
+                    // Remove from blog index
+                    const indexItem = blogIndexList.querySelector(`[data-post-id="${postId}"]`);
+                    if (indexItem) {
+                        indexItem.remove();
+                    }
+                    
+                    // Remove from localStorage
+                    removePostFromStorage(postId);
+                }
+            }
+            
+            // Add post to blog index sidebar
+            function addToBlogIndex(title, date, postId) {
+                const indexItem = document.createElement('div');
+                indexItem.className = 'blog-index-item';
+                indexItem.dataset.postId = postId;
+                indexItem.innerHTML = `
+                    <a href="#${postId}" class="blog-index-title">${title}</a>
+                    <div class="blog-index-date">${date}</div>
+                    <button class="delete-index-btn" data-post-id="${postId}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                // Insert at the top of index (newest first)
+                blogIndexList.insertBefore(indexItem, blogIndexList.firstChild);
+                
+                // Add click event for smooth scrolling
+                indexItem.querySelector('.blog-index-title').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(this.getAttribute('href'));
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+                
+                // Add delete event to index item
+                indexItem.querySelector('.delete-index-btn').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    deletePost(postId);
+                });
+                
+                // Limit index to 15 items
+                const indexItems = blogIndexList.querySelectorAll('.blog-index-item');
+                if (indexItems.length > 15) {
+                    blogIndexList.removeChild(indexItems[indexItems.length - 1]);
+                }
+            }
+            
+            // Reset form after submission
+            function resetForm() {
+                postTitle.value = '';
+                postContent.value = '';
+                postTags.value = '';
+                postImages.value = '';
+                if (postAudio) postAudio.value = '';
+                imageUrl.value = '';
+                imagePreviews.innerHTML = '';
+                currentAttachments = [];
+                
+                // Reset character counts
+                titleCount.textContent = '0/100';
+                contentCount.textContent = '0/5000';
+                titleCount.className = 'character-count';
+                contentCount.className = 'character-count';
+                
+                // Show success message
+                const originalText = submitBtn.querySelector('span').textContent;
+                submitBtn.querySelector('span').textContent = 'Posted!';
+                submitBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                
+                setTimeout(() => {
+                    submitBtn.querySelector('span').textContent = originalText;
+                    submitBtn.style.background = 'linear-gradient(135deg, var(--blue), var(--light-blue))';
+                }, 2000);
+            }
+            
+            // Format date to readable string
+            function formatDate(date) {
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+                const month = months[date.getMonth()];
+                const day = date.getDate();
+                const year = date.getFullYear();
+                const hour = date.getHours() % 12 || 12;
+                const minute = date.getMinutes().toString().padStart(2, '0');
+                const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+                
+                return `${month} ${day}, ${year} at ${hour}:${minute} ${ampm}`;
+            }
+            
+            // Save posts to localStorage
+            function savePostToStorage(post) {
+                let posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                posts.unshift(post);
+                
+                // Keep only last 100 posts
+                if (posts.length > 100) {
+                    posts = posts.slice(0, 100);
+                }
+                
+                localStorage.setItem('blogPosts', JSON.stringify(posts));
+            }
+            
+            // Remove post from localStorage
+            function removePostFromStorage(postId) {
+                let posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                posts = posts.filter(post => post.id !== postId);
+                localStorage.setItem('blogPosts', JSON.stringify(posts));
+            }
+            
+            // Load saved posts from localStorage
+            function loadSavedPosts() {
+                let posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                
+                // Combine all posts: hardcoded + saved
+                const allPosts = [];
+                
+                // Get hardcoded posts (already in correct order)
+                const hardcodedPosts = document.querySelectorAll('.blog-post[id^="post"]');
+                
+                hardcodedPosts.forEach(postElement => {
+                    const postId = postElement.id;
+                    const postDate = getPostDate(postElement);
+                    const tags = Array.from(postElement.querySelectorAll('.tag')).map(tag => tag.textContent).join(', ');
+                    
+                    allPosts.push({
+                        id: postId,
+                        title: postElement.querySelector('h2').textContent,
+                        content: postElement.querySelector('.post-content').innerHTML,
+                        tags: tags,
+                        author: 'naomi',
+                        date: postDate.toISOString(),
+                        element: postElement,
+                        isHardcoded: true
+                    });
+                });
+                
+                // Add saved posts (filter out duplicates)
+                posts.forEach(savedPost => {
+                    if (!['post1', 'post2'].includes(savedPost.id)) {
+                        savedPost.element = null; // Will be created
+                        savedPost.isHardcoded = false;
+                        allPosts.push(savedPost);
+                    }
+                });
+                
+                // Sort ALL posts by date (newest first)
+                allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Clear the container and rebuild in correct order
+                blogPostsContainer.innerHTML = '';
+                blogIndexList.innerHTML = '';
+                
+                // Re-add all posts in chronological order (newest first)
+                allPosts.forEach(post => {
+                    if (post.element && post.isHardcoded) {
+                        // Re-add existing hardcoded post
+                        blogPostsContainer.appendChild(post.element);
+                    } else if (!post.isHardcoded) {
+                        // Create new post for saved posts
+                        const date = new Date(post.date);
+                        const formattedDate = formatDate(date);
+                        
+                        // Create tags HTML
+                        let tagsHTML = '';
+                        if (post.tags) {
+                            const tagArray = post.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+                            tagsHTML = tagArray.map(tag => `<span class="tag">${tag}</span>`).join('');
+                        }
+                        
+                        // Create attachment HTML if provided
+                        const postAttachments = Array.isArray(post.attachments)
+                            ? post.attachments
+                            : (Array.isArray(post.images) ? post.images.map(img => ({ ...img, type: 'image' })) : []);
+                        const attachmentsHTML = renderAttachmentsHTML(postAttachments, post.author);
+                        
+                        // Create post element
+                        const postElement = document.createElement('div');
+                        postElement.className = 'blog-post user-post';
+                        postElement.id = post.id;
+                        postElement.innerHTML = `
+                            <button class="delete-post-btn" data-post-id="${post.id}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                            <h2>${post.title}</h2>
+                            <div class="post-date"><i class="far fa-calendar"></i> ${formattedDate}</div>
+                            <span class="post-author"><i class="fas fa-user"></i> Posted by: ${post.author}</span>
+                            
+                            <div class="post-content">
+                                ${post.content}
+                                ${attachmentsHTML}
+                            </div>
+                            
+                            ${tagsHTML ? `<div class="tags">${tagsHTML}</div>` : ''}
+                        `;
+                        
+                        blogPostsContainer.appendChild(postElement);
+                        
+                        // Add delete event
+                        postElement.querySelector('.delete-post-btn').addEventListener('click', function() {
+                            deletePost(post.id);
+                        });
+                    }
+                    
+                    // Add all posts to blog index
+                    const formattedDate = formatDate(new Date(post.date));
+                    addToBlogIndex(post.title, formattedDate, post.id);
+                });
+                
+                // Add click events to all images
+                document.querySelectorAll('.blog-image, .image-grid img').forEach(img => {
+                    if (!img.onclick) {
+                        img.addEventListener('click', function() {
+                            window.expandImage(this.src, this.alt);
+                        });
+                    }
+                });
+                
+                // Re-add delete events
+                addDeleteEventsToExistingPosts();
+            }
+            
+            // Add delete events to existing posts
+            function addDeleteEventsToExistingPosts() {
+                document.querySelectorAll('.delete-post-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const postId = this.dataset.postId;
+                        deletePost(postId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-index-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const postId = this.dataset.postId;
+                        deletePost(postId);
+                    });
+                });
+            }
+            
+            // Allow Enter key to submit (but Ctrl+Enter for new line in textarea)
+            postContent.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    e.preventDefault();
+                    submitBtn.click();
+                }
+            });
+            
+            // Smooth scroll for blog index links
+            document.querySelectorAll('.blog-index-title').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Initialize the blog functionality
+            loadSavedPosts();
+            addDeleteEventsToExistingPosts();
+        });
+    </script>
+</body>
+</html>
