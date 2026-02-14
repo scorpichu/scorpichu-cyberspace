@@ -1118,82 +1118,95 @@
                 const nowPlayingArtist = document.getElementById('now-playing-artist');
                 const progressContainer = document.querySelector('.progress-container');
                 
-                // Player state (visual only)
-                let isPlaying = true; // Start "playing" for visual effect
+                // Player state
+                let isPlaying = false;
                 let currentSongIndex = 0;
-                let progress = 30; // Start at 30% for visual effect
-                let progressInterval;
-                
-                // Song data (visual only)
+
+                // Song data + real audio sources
                 const songs = [
                     {
                         title: 'Collect Call Garage',
                         artist: 'Tomatomat',
+                        src: '/audio/collect-call-garage.mp3',
                     },
                     {
                         title: 'Insomnia',
                         artist: 'YUKIKA',
+                        src: '/audio/insomnia.mp3',
                     },
                     {
                         title: 'Makeup',
                         artist: 'The Deep',
+                        src: '/audio/make-up.mp3',
                     },
                     {
                         title: 'Diorama',
                         artist: 'Yves',
+                        src: '/audio/diorama.mp3',
                     }
                 ];
+
+                const audio = new Audio();
+                audio.preload = 'auto';
+
+                // Shared saved volume
+                const savedVolumeRaw = localStorage.getItem('siteVolume');
+                const savedVolume = savedVolumeRaw !== null ? Number(savedVolumeRaw) : 70;
+                const initialVolume = Number.isFinite(savedVolume) ? Math.max(0, Math.min(100, savedVolume)) : 70;
+                audio.volume = initialVolume / 100;
+                if (volumeSlider) volumeSlider.value = String(initialVolume);
                 
                 // Initialize player
                 function initPlayer() {
                     // Load first song
                     loadSong(currentSongIndex);
-                    
-                    // Start visual progress animation
-                    startVisualProgress();
                 }
                 
-                // Play/Pause functionality (visual only)
+                // Play/Pause functionality
                 playPauseBtn.addEventListener('click', function() {
                     if (isPlaying) {
-                        pauseVisual();
+                        pauseAudio();
                     } else {
-                        playVisual();
+                        playAudio();
                     }
                 });
                 
-                function playVisual() {
-                    isPlaying = true;
-                    playIcon.classList.remove('fa-play');
-                    playIcon.classList.add('fa-pause');
-                    
-                    // Start visual progress animation
-                    startVisualProgress();
+                function playAudio() {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        playIcon.classList.remove('fa-play');
+                        playIcon.classList.add('fa-pause');
+                    }).catch(() => {
+                        isPlaying = false;
+                        playIcon.classList.remove('fa-pause');
+                        playIcon.classList.add('fa-play');
+                    });
                 }
                 
-                function pauseVisual() {
+                function pauseAudio() {
+                    audio.pause();
                     isPlaying = false;
                     playIcon.classList.remove('fa-pause');
                     playIcon.classList.add('fa-play');
-                    clearInterval(progressInterval);
                 }
                 
-                // Next/Previous functionality (visual only)
+                // Next/Previous functionality
                 nextBtn.addEventListener('click', function() {
                     currentSongIndex = (currentSongIndex + 1) % songs.length;
                     loadSong(currentSongIndex);
-                    playVisual();
+                    playAudio();
                 });
                 
                 prevBtn.addEventListener('click', function() {
                     currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
                     loadSong(currentSongIndex);
-                    playVisual();
+                    playAudio();
                 });
                 
-                // Load song (visual only)
+                // Load song
                 function loadSong(index) {
                     const song = songs[index];
+                    audio.src = song.src;
                     
                     // Update UI
                     currentSongElement.textContent = `${song.artist} - ${song.title}`;
@@ -1212,50 +1225,45 @@
                     });
                     
                     // Reset progress
-                    progress = 0;
                     progressBar.style.width = '0%';
                 }
                 
-                // Visual progress animation
-                function startVisualProgress() {
-                    clearInterval(progressInterval);
-                    
-                    progressInterval = setInterval(function() {
-                        if (isPlaying) {
-                            if (progress < 100) {
-                                progress += 0.3; // Slow visual progress
-                                progressBar.style.width = progress + '%';
-                            } else {
-                                // When "song" ends, play next
-                                currentSongIndex = (currentSongIndex + 1) % songs.length;
-                                loadSong(currentSongIndex);
-                                progress = 0;
-                            }
-                        }
-                    }, 100);
-                }
+                // Real progress updates
+                audio.addEventListener('timeupdate', function() {
+                    if (!audio.duration) return;
+                    const progress = (audio.currentTime / audio.duration) * 100;
+                    progressBar.style.width = progress + '%';
+                });
+
+                audio.addEventListener('ended', function() {
+                    currentSongIndex = (currentSongIndex + 1) % songs.length;
+                    loadSong(currentSongIndex);
+                    playAudio();
+                });
                 
-                // Playlist item click (visual only)
+                // Playlist item click
                 playlistItems.forEach((item, index) => {
                     item.addEventListener('click', function() {
                         currentSongIndex = index;
                         loadSong(index);
-                        playVisual();
+                        playAudio();
                     });
                 });
                 
-                // Progress bar click - visual seeking
+                // Progress bar click - seeking
                 progressContainer.addEventListener('click', function(e) {
+                    if (!audio.duration) return;
                     const containerWidth = this.clientWidth;
                     const clickX = e.offsetX;
-                    progress = (clickX / containerWidth) * 100;
-                    progressBar.style.width = progress + '%';
+                    const progress = (clickX / containerWidth);
+                    audio.currentTime = progress * audio.duration;
                 });
                 
-                // Volume control (visual only)
+                // Volume control
                 volumeSlider.addEventListener('input', function() {
-                    const volume = this.value;
-                    // Just visual - no actual audio
+                    const volume = Number(this.value);
+                    audio.volume = volume / 100;
+                    localStorage.setItem('siteVolume', String(volume));
                 });
                 
                 // Initialize the visual player
