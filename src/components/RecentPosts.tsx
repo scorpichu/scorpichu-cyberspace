@@ -4,10 +4,24 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { BlogPost } from '@/lib/types'
 
-export default function RecentPosts() {
+interface RecentPostsProps {
+  filterTag?: string
+  limit?: number
+}
+
+export default function RecentPosts({ filterTag, limit = 3 }: RecentPostsProps) {
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  const normalizeTag = (tag: string): string => {
+    return tag.trim().replace(/^['"]+|['"]+$/g, '').toLowerCase()
+  }
+
+  const parseTags = (tags: string): string[] => {
+    if (!tags || !tags.trim()) return []
+    return tags.split(',').map(normalizeTag).filter(t => t.length > 0)
+  }
 
   useEffect(() => {
     async function fetchPosts() {
@@ -17,7 +31,14 @@ export default function RecentPosts() {
           throw new Error('Failed to fetch posts')
         }
         const data = await response.json()
-        setPosts(data.slice(0, 3))
+
+        let filteredPosts = data
+        if (filterTag) {
+          const targetTag = normalizeTag(filterTag)
+          filteredPosts = data.filter((post: BlogPost) => parseTags(post.tags).includes(targetTag))
+        }
+
+        setPosts(filteredPosts.slice(0, limit))
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
@@ -26,7 +47,7 @@ export default function RecentPosts() {
     }
 
     fetchPosts()
-  }, [])
+  }, [filterTag, limit])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -51,15 +72,10 @@ export default function RecentPosts() {
     return cleaned.substring(0, maxLength) + '...'
   }
 
-  const parseTags = (tags: string): string[] => {
-    if (!tags || !tags.trim()) return []
-    return tags.split(',').map(t => t.trim()).filter(t => t.length > 0)
-  }
-
   if (loading) {
     return (
       <div className="recent-post-loader">
-        <p>Loading recent blogposts...</p>
+        <p>Loading {filterTag ? `${filterTag} posts` : 'recent blogposts'}...</p>
       </div>
     )
   }
@@ -75,7 +91,11 @@ export default function RecentPosts() {
   if (posts.length === 0) {
     return (
       <div className="no-posts-message">
-        <p>No blog posts yet. Check back soon!</p>
+        <p>
+          {filterTag
+            ? `No ${filterTag} posts yet. Check back soon!`
+            : 'No blog posts yet. Check back soon!'}
+        </p>
       </div>
     )
   }

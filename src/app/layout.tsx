@@ -6,6 +6,17 @@ import Footer from '@/components/Footer'
 export const metadata: Metadata = {
   title: "Naomi's Cyberspace",
   description: "HELLO! i'm NAOMI! My personal digital hideout where I share my obsessions with fashion, music, books, yuri, anime, and more!",
+  openGraph: {
+    title: "Naomi's Cyberspace",
+    description: "HELLO! i'm NAOMI! My personal digital hideout where I share my obsessions with fashion, music, books, yuri, anime, and more!",
+    images: ['/images/M1YUU%20CH00535%20Y0U.jfif'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Naomi's Cyberspace",
+    description: "HELLO! i'm NAOMI! My personal digital hideout where I share my obsessions with fashion, music, books, yuri, anime, and more!",
+    images: ['/images/M1YUU%20CH00535%20Y0U.jfif'],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -2179,7 +2179,14 @@
             
             // Save posts to localStorage
             function savePostToStorage(post) {
+                if ((post.title || '').trim().toLowerCase() === 'yuri recommendations for beginners') {
+                    return;
+                }
+
                 let posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                posts = posts.filter(savedPost => {
+                    return (savedPost.title || '').trim().toLowerCase() !== 'yuri recommendations for beginners';
+                });
                 posts.unshift(post);
                 
                 // Keep only last 100 posts
@@ -2200,6 +2207,13 @@
             // Load saved posts from localStorage
             function loadSavedPosts() {
                 let posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                const filteredPosts = posts.filter(post => {
+                    return (post.title || '').trim().toLowerCase() !== 'yuri recommendations for beginners';
+                });
+                if (filteredPosts.length !== posts.length) {
+                    localStorage.setItem('blogPosts', JSON.stringify(filteredPosts));
+                }
+                posts = filteredPosts;
                 
                 // Combine all posts: hardcoded + saved
                 const allPosts = [];

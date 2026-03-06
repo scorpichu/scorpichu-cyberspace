@@ -4,6 +4,7 @@ import BlinkiesGallery from '@/components/BlinkiesGallery'
 import UpdatesBox from '@/components/UpdatesBox'
 import RecentPosts from '@/components/RecentPosts'
 import RightSidebar from '@/components/RightSidebar'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -25,7 +26,14 @@ export default function Home() {
           <p>My main interests include Yuri, literature, K/J music, dancing, and dressing up. This space will evolve as I do!</p>
           <p>It will be like my own threads, where no one can really reply LOL... I will be updating with Yuri/Manga recommendations, along with BOOKS! And music recs! How exciting :)</p>
           <h2>Recent Blogposts</h2>
-          <RecentPosts />
+          <RecentPosts limit={2} />
+          <p><Link href="/blog">View all posts →</Link></p>
+          <h2>Yuri Recommendations</h2>
+          <RecentPosts filterTag="yuri" limit={2} />
+          <p><Link href="/blog">View all yuri posts →</Link></p>
+          <h2>Music Recommendations</h2>
+          <RecentPosts filterTag="music" limit={2} />
+          <p><Link href="/blog">View all music posts →</Link></p>
           <h2>Recent Updates</h2>
           <div className="box">
             <p><strong>Website Launch - Feb 2026</strong></p>
